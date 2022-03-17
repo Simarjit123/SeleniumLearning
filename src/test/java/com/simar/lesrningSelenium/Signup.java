@@ -38,7 +38,7 @@ public class Signup {
 		// email and submit form
 		WebElement emailInput = wd.findElement(By.id("email_create"));
 		WebElement createAccount = wd.findElement(By.id("SubmitCreate"));
-		emailInput.sendKeys("skaur2@gmail.com");
+		emailInput.sendKeys("skaur5@gmail.com");
 		createAccount.submit();
 		// Signup details form
 
@@ -95,16 +95,14 @@ public class Signup {
 		WebElement aliasAddressInput = wd.findElement(By.cssSelector("#alias"));
 		aliasAddressInput.sendKeys("Elmira road,Guelph");
 
-		wd.findElement(By.cssSelector("#submitAccount")).click();
+		// wd.findElement(By.cssSelector("#submitAccount")).click();
 
 //click
 		wd.findElement(By.id("uniform-newsletter")).click();
-	
 
 		wd.findElement(By.id("uniform-optin")).click();
 		wd.findElement(By.cssSelector("#submitAccount")).click();
 
-		
 	}
 
 	@AfterMethod
