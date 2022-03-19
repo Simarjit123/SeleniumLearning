@@ -1,5 +1,6 @@
 package com.simar.lesrningSelenium;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -34,18 +35,20 @@ public class Signup {
 	}
 
 	@Test
-	void signup() {
+	void verifySignupTest() {
 		// email and submit form
 		WebElement emailInput = wd.findElement(By.id("email_create"));
 		WebElement createAccount = wd.findElement(By.id("SubmitCreate"));
-		emailInput.sendKeys("skaur5@gmail.com");
+//		emailInput.sendKeys(randomString() + "@gmail.com");
+		emailInput.sendKeys(generateRandomString(5) + "@gmail.com");
 		createAccount.submit();
 		// Signup details form
 
 		WebElement genderInput = wd.findElement(By.id("id_gender2"));
 		genderInput.click();
 
-		WebElement firstNameInput = wd.findElement(By.id("customer_firstname"));
+		WebElement firstNameInput = wd.findElement(By.cssSelector("#customer_firstname"));
+		// id("customer_firstname"));
 		firstNameInput.sendKeys("Simar");
 
 		WebElement lastNameInput = wd.findElement(By.id("customer_lastname"));
@@ -95,7 +98,7 @@ public class Signup {
 		WebElement aliasAddressInput = wd.findElement(By.cssSelector("#alias"));
 		aliasAddressInput.sendKeys("Elmira road,Guelph");
 
-		// wd.findElement(By.cssSelector("#submitAccount")).click();
+		// wd.findElement(By.cssSelector("#submitAccount")).submit();
 
 //click
 		wd.findElement(By.id("uniform-newsletter")).click();
@@ -103,10 +106,24 @@ public class Signup {
 		wd.findElement(By.id("uniform-optin")).click();
 		wd.findElement(By.cssSelector("#submitAccount")).click();
 
+		// Assertion
+		WebElement submissionCheck = wd.findElement(By.className("page-heading"));
+		Assert.assertEquals(submissionCheck.getText(), "MY ACCOUNT", "Please try again later");
+
 	}
 
-	@AfterMethod
-	public void tearDown() {
-		// wd.quit();
+	// method to generate alphanumeric string
+	public String generateRandomString(int length) {
+		String randomString = "";
+
+		char[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890".toCharArray();
+		Random random = new Random();
+		for (int i = 0; i < length; i++) {
+			randomString = randomString + chars[random.nextInt(chars.length)];
+		}
+
+		return randomString;
+
 	}
+
 }
