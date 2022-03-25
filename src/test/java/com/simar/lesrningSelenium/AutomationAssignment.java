@@ -7,7 +7,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -17,7 +19,6 @@ import org.testng.annotations.Test;
 public class AutomationAssignment {
 
 	WebDriver wd;
-	Actions action;
 
 	@BeforeMethod
 	public void setUp() {
@@ -35,6 +36,7 @@ public class AutomationAssignment {
 		wd.manage().window().maximize();
 	}
 
+	@Test
 	public void testShoppingWebPage() {
 
 		// step 1-LOGIN TO PORTAL WebElement
@@ -83,29 +85,23 @@ public class AutomationAssignment {
 
 		// Step 8- ASSERT SUCCESS MESSAGE
 
-		/*
-		 * WebElement successmessage=wd.findElement(By.cssSelector(".icon-ok"));
-		 * Assert.assertEquals(successmessage.getText(),
-		 * "Product successfully added to your shopping cart");
-		 */
+		WebElement successMessage = wd.findElement(By.cssSelector("div.layer_cart_product.col-xs-12.col-md-6>h2"));
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		Assert.assertEquals(successMessage.getText(), "Product successfully added to your shopping cart");
 
 		// Step 9-ASSERT QTY & PRODUCT
-		/*
-		 * WebElement confirmQuantity =
-		 * wd.findElement(By.id("layer_cart_product_quantity"));
-		 * Assert.assertEquals(confirmQuantity.getText(), "");
-		 */
-		//product assert
-		/*
-		 * WebElement productAssert =
-		 * wd.findElement(By.cssSelector("#layer_cart_product_title"));
-		 * Assert.assertEquals(productAssert.getText(), "Faded Short Sleeve T-shirts");
-		 * // quantity assert
-		 * 
-		 * WebElement quantityAssert =
-		 * wd.findElement(By.cssSelector("##layer_cart_product_quantity"));
-		 * Assert.assertEquals(quantityAssert.getText(), "2");
-		 */
+
+//product name assert
+		WebElement productName = wd.findElement(By.cssSelector("#layer_cart_product_title"));
+		Assert.assertEquals(productName.getText(), "Faded Short Sleeve T-shirts");
+
+		// product quantity assert
+		WebElement productQuantity = wd.findElement(By.id("layer_cart_product_quantity"));
+		Assert.assertEquals(productQuantity.getText(), "2");
 
 		// Step 10- PROCEED TO CHECKOUT
 		WebElement checkOutClick1 = wd.findElement(By.cssSelector("a.btn.btn-default.button.button-medium"));
@@ -117,9 +113,9 @@ public class AutomationAssignment {
 		Assert.assertEquals(totalPrice.getText(), "$35.02");
 
 		// Step 12-CLICK PROCEED TO CHECKOUT
-		WebElement checkOutClick2 = wd.findElement(By.cssSelector("a.button.btn.btn-default.standard-checkout.button-medium"));
+		WebElement checkOutClick2 = wd
+				.findElement(By.cssSelector("a.button.btn.btn-default.standard-checkout.button-medium"));
 		checkOutClick2.click();
-		
 
 		// Step 13-Enter in TextBox
 		WebElement addMessage = wd.findElement(By.cssSelector("textarea[name = 'message']"));
@@ -157,6 +153,11 @@ public class AutomationAssignment {
 		WebElement orderConfirmAssertion = wd.findElement(By.cssSelector("p.cheque-indent"));
 		Assert.assertEquals(orderConfirmAssertion.getText(), "Your order on My Store is complete.");
 
+	}
+
+	@AfterMethod
+	public void tearDown() {
+		wd.quit();
 	}
 
 }
